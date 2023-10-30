@@ -33,5 +33,5 @@ viem中有三种类型的**客户端**：
 在viem中有三种传输方式：
 
 - [HTTP Transport](/docs/clients/transports/http)，通过HTTP JSON-RPC API执行请求。
-- A [WebSocket Transport](/docs/clients/transports/websocket) 通过WebSocket JSON-RPC API执行请求。
-- A [Custom Transport](/docs/clients/transports/custom) 通过[EIP-1193 `request` 函数](https://eips.ethereum.org/EIPS/eip-1193)执行请求。
+- [WebSocket Transport](/docs/clients/transports/websocket) 通过WebSocket JSON-RPC API执行请求。
+- [Custom Transport](/docs/clients/transports/custom) 通过[EIP-1193 `request` 函数](https://eips.ethereum.org/EIPS/eip-1193)执行请求。

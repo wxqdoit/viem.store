@@ -13,7 +13,7 @@ head:
 ---
 
 # 公共客户端
-公共客户端是一个面向 "public" [JSON-RPC API](https://ethereum.org/en/developers/docs/apis/json-rpc/)方法的接口，如检索区块高度，交易，从智能合约读取数据等等。访问[Public Actions](/docs/actions/public/introduction)。
+公共客户端是一个面向公众[JSON-RPC API](https://ethereum.org/en/developers/docs/apis/json-rpc/)方法的接口，如检索区块高度，交易，从智能合约读取数据等等。访问[Public Actions](/docs/actions/public/introduction)。
 
 通过`createPublicClient`函数来创建一个客户端，并赋予[Transport](/docs/clients/intro)来配置[Chain](/docs/clients/chains)。
 
@@ -49,13 +49,13 @@ const blockNumber = await client.getBlockNumber() // [!code focus:10]
 
 ### `eth_call` 聚合 (通过 Multicall)
 
-The Public Client supports the aggregation of `eth_call` requests into a single multicall (`aggregate3`) request.
+公共客户端支持将 `eth_call` 请求聚合为单个多调用 (`aggregate3`) 请求。
 
-This means for every Action that utilizes an `eth_call` request (ie. `readContract`), the Public Client will batch the requests (over a timed period) and send it to the RPC Provider in a single multicall request. This can dramatically improve network performance, and decrease the amount of [Compute Units (CU)](https://docs.alchemy.com/reference/compute-units) used by RPC Providers like Alchemy, Infura, etc.
+这意味着对于任何使用 `eth_call` 请求的方法（如 `readContract`），公共客户端会打包请求，然后通过单一multicall请求发送到RPC提供者。这就可以显著提高网络性能，并减少Alchemy、Infura 等 RPC 提供商使用的[计算单元 (CU)](https://docs.alchemy.com/reference/compute-units) 数量。
 
-The Public Client schedules the aggregation of `eth_call` requests over a given time period. By default, it executes the batch request at the end of the current [JavaScript message queue](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop#queue) (a [zero delay](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop#zero_delays)), however, consumers can specify a custom `wait` period (in ms).
+公共客户端会在一段时间内把eth_call请求聚合起来。通常在默认情况下，viem会在当前[JavaScript消息队列](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop#queue)的末尾执行这些批量请求，但是用户可以设置自定义等待事时间（以毫秒计）
 
-You can enable `eth_call` aggregation by setting the `batch.multicall` flag to `true`:
+你可以通过设置`batch.multicall` 字段为 `true`来启用`eth_call`：
 
 ```ts
 const client = createPublicClient({
@@ -67,14 +67,15 @@ const client = createPublicClient({
 })
 ```
 
-> You can also [customize the `multicall` options](#batch-multicall-batchsize-optional).
+> 也可以[自定义`multicall`选项](#batch-multicall-batchsize-optional)。
 
-Now, when you start to utilize `readContract` Actions, the Public Client will batch and send over those requests at the end of the message queue (or custom time period) in a single `eth_call` multicall request:
+现在，当你使用`readContract`方法，公共客户端会打包，然后公共客户端将在消息队列末尾（或自定义时间段）在单个“eth_call”多调用请求中批量发送这些请求：
+
 
 ```ts
 const contract = getContract({ address, abi })
 
-// The below will send a single request to the RPC Provider.
+// 下面的示例将只会向 RPC 提供者发送单个请求。
 const [name, totalSupply, symbol, tokenUri, balance] = await Promise.all([
   contract.read.name(),
   contract.read.totalSupply(),
@@ -84,15 +85,15 @@ const [name, totalSupply, symbol, tokenUri, balance] = await Promise.all([
 ])
 ```
 
-> Read more on [Contract Instances](/docs/contract/getContract.html).
+> 阅读更多[合约实例](/docs/contract/getContract.html).
 
-## Parameters
+## 参数
 
 ### transport
 
 - **Type:** [Transport](/docs/glossary/types#transport)
 
-The [Transport](/docs/clients/intro) of the Public Client.
+公共客户端的中的[Transport](/docs/clients/intro)。
 
 ```ts
 const client = createPublicClient({
@@ -101,11 +102,12 @@ const client = createPublicClient({
 })
 ```
 
-### chain (optional)
+### chain（可选的）
 
 - **Type:** [Chain](/docs/glossary/types#chain)
+- 
+公共客户端的中的[Chain](/docs/clients/chains)。
 
-The [Chain](/docs/clients/chains) of the Public Client.
 
 ```ts
 const client = createPublicClient({
@@ -114,16 +116,17 @@ const client = createPublicClient({
 })
 ```
 
-### batch (optional)
+### batch（可选的）
 
-Flags for batch settings.
+用于批处理设置的标识
 
-### batch.multicall (optional)
+### batch.multicall（可选的）
 
 - **Type:** `boolean | MulticallBatchOptions`
 - **Default:** `false`
 
-Toggle to enable `eth_call` multicall aggregation.
+
+切换来启用`eth_call`多次调用聚合.
 
 ```ts
 const client = createPublicClient({
@@ -135,14 +138,14 @@ const client = createPublicClient({
 })
 ```
 
-### batch.multicall.batchSize (optional)
+### batch.multicall.batchSize（可选的）
 
 - **Type:** `number`
 - **Default:** `1_024`
 
-The maximum size (in bytes) for each multicall (`aggregate3`) calldata chunk.
+每个多次调用的调用数据块的最大值（使用bytes计算）。
 
-> Note: Some RPC Providers limit the amount of calldata that can be sent in a single request. It is best to check with your RPC Provider to see if there are any calldata size limits to `eth_call` requests.
+> 注意：有一些RPC Providers限制单个请求中可以被发送的数据大小，最好是检查一下RPC Provider，你的`eth_call` 请求中是否有`calldata`大小限制
 
 ```ts
 const client = createPublicClient({
@@ -156,12 +159,12 @@ const client = createPublicClient({
 })
 ```
 
-### batch.multicall.wait (optional)
+### batch.multicall.wait（可选的）
 
 - **Type:** `number`
 - **Default:** `0` ([zero delay](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop#zero_delays))
 
-The maximum number of milliseconds to wait before sending a batch.
+发送批处理请求之前等待的最大毫秒数。
 
 ```ts
 const client = createPublicClient({
@@ -175,12 +178,12 @@ const client = createPublicClient({
 })
 ```
 
-### cacheTime (optional)
+### cacheTime（可选的）
 
 - **Type:** `number`
 - **Default:** `client.pollingInterval`
 
-Time (in ms) that cached data will remain in memory.
+缓存数据在内存中保留的时间（以毫秒为单位）。
 
 ```ts
 const client = createPublicClient({
@@ -190,12 +193,12 @@ const client = createPublicClient({
 })
 ```
 
-### key (optional)
+### key（可选的）
 
 - **Type:** `string`
 - **Default:** `"public"`
 
-A key for the Client.
+客户端中的key。
 
 ```ts
 const client = createPublicClient({
@@ -205,12 +208,12 @@ const client = createPublicClient({
 })
 ```
 
-### name (optional)
+### name（可选的）
 
 - **Type:** `string`
 - **Default:** `"Public Client"`
 
-A name for the Client.
+客户端的名字。
 
 ```ts
 const client = createPublicClient({
@@ -220,12 +223,12 @@ const client = createPublicClient({
 })
 ```
 
-### pollingInterval (optional)
+### pollingInterval（可选的）
 
 - **Type:** `number`
 - **Default:** `4_000`
 
-Frequency (in ms) for polling enabled Actions.
+轮询启用的操作的间隔时间（毫秒）
 
 ```ts
 const client = createPublicClient({
@@ -235,8 +238,8 @@ const client = createPublicClient({
 })
 ```
 
-## Live Example
+## 例子
 
-Check out the usage of `createPublicClient` in the live [Public Client Example](https://stackblitz.com/github/wagmi-dev/viem/tree/main/examples/clients_public-client) below.
+在下面的[公共客户端示例](https://stackblitz.com/github/wagmi-dev/viem/tree/main/examples/clients_public-client) 查看`createPublicClient`的用例：
 
 <iframe frameborder="0" width="100%" height="500px" src="https://stackblitz.com/github/wagmi-dev/viem/tree/main/examples/clients_public-client?embed=1&file=index.ts&hideNavigation=1&hideDevTools=true&terminalHeight=0&ctl=1"></iframe>

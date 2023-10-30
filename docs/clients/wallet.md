@@ -2,42 +2,43 @@
 head:
   - - meta
     - property: og:title
-      content: Wallet Client
+      content: 钱包客户端
   - - meta
     - name: description
-      content: A function to create a Wallet Client.
+      content: 一个方法创建钱包客户端.
   - - meta
     - property: og:description
-      content: A function to create a Wallet Client.
+      content: 一个方法创建钱包客户端.
 
 ---
 
-# Wallet Client
+# 钱包客户端
 
-A Wallet Client is an interface to interact with [Ethereum Account(s)](https://ethereum.org/en/glossary/#account) and provides the ability to retrieve accounts, execute transactions, sign messages, etc through [Wallet Actions](/docs/actions/wallet/introduction).
+钱包客户端是一个用于与[一以太坊账户](https://ethereum.org/en/glossary/#account)交互的接口，它通过[钱包操作](/docs/actions/wallet/introduction)提供恢复账户，执行交易，签名消息等功能。
 
-The `createWalletClient` function sets up a Wallet Client with a given [Transport](/docs/clients/intro).
 
-The Wallet Client supports signing over:
+使用`createWalletClient` 函数创建一个钱包客户端，并赋予一个[Transport](/docs/clients/intro)。
 
-- [JSON-RPC Accounts](#json-rpc-accounts) (e.g. Browser Extension Wallets, WalletConnect, etc.).
-- [Local Accounts](#local-accounts-private-key-mnemonic-etc) (e.g. private key/mnemonic wallets).
+钱包客户端支持签名：
 
-## Import
+- [JSON-RPC账户](#json-rpc-accounts)（例如： 浏览器扩展钱包、WalletConnect等）。
+- [本地账户](#local-accounts-private-key-mnemonic-etc)（例如： 私钥/助记词钱包）。
+
+## 导入
 
 ```ts
 import { createWalletClient } from 'viem'
 ```
 
-## JSON-RPC Accounts
+## JSON-RPC账户
 
-A [JSON-RPC Account](/docs/accounts/jsonRpc) **defers** signing of transactions & messages to the target Wallet over JSON-RPC. An example could be sending a transaction via a Browser Extension Wallet (e.g. MetaMask) with the `window.ethereum` Provider.
+[JSON-RPC账户](/docs/accounts/jsonRpc) **推迟**通过JSON-RPC将交易和消息签名到目标钱包。 一个例子是通过浏览器扩展钱包（例如 MetaMask）使用`window.ethereum`发送交易。
 
-Below is an example of how you can set up a JSON-RPC Account.
+下面是一个设置JSON-RPC账户的示例：
 
-#### 1: Initialize a Wallet Client
+#### 1：初始化一个钱包客户端
 
-Before we set up our Account and start consuming Wallet Actions, we will need to set up our Wallet Client with the [`custom` Transport](/docs/clients/transports/custom), where we will pass in the `window.ethereum` Provider:
+在我们设置账户和开始使用钱包操作之前，我们需要用[`custom` Transport](/docs/clients/transports/custom)来设置好钱包客户端，并在里面传入`window.ethereum` Provider：
 
 ```ts
 import { createWalletClient, custom } from 'viem'
@@ -49,9 +50,9 @@ const client = createWalletClient({
 })
 ```
 
-#### 2: Set up your JSON-RPC Account
+#### 2: 设置JSON-RPC账户
 
-We will want to retrieve an address that we can access in our Wallet (e.g. MetaMask).
+我们需要检索可以在钱包中访问的地址（例如 MetaMask）。
 
 ```ts
 import { createWalletClient, custom } from 'viem' // [!code focus]
@@ -66,11 +67,12 @@ const [address] = await client.getAddresses() // [!code focus:10]
 // or: const [address] = await client.requestAddresses() // [!code focus:10]
 ```
 
+> 注意：有一些钱包（如metamask）可能需要先通过[`client.requestAddresses`](/docs/actions/wallet/requestAddresses)请求账户地址
 > Note: Some Wallets (like MetaMask) may require you to request access to Account addresses via [`client.requestAddresses`](/docs/actions/wallet/requestAddresses) first.
 
-#### 3: Consume [Wallet Actions](/docs/actions/wallet/introduction)
+#### 3: 使用[钱包操作](/docs/actions/wallet/introduction)
 
-Now you can use that address within Wallet Actions that require a signature from the user:
+现在可以在需要用户签名的钱包操作中使用该地址：
 
 ```ts
 import { createWalletClient, custom } from 'viem'
@@ -90,9 +92,9 @@ const hash = await client.sendTransaction({ // [!code focus:10]
 })
 ```
 
-#### Optional: Hoist the Account
+#### 可选项：提升帐户
 
-If you do not wish to pass an account around to every Action that requires an `account`, you can also hoist the account into the Wallet Client.
+如果你不希望在每次请求`account`操作的时候都传入账户，你可以提升账户到钱包客户端
 
 ```ts
 import { createWalletClient, http } from 'viem'
@@ -113,21 +115,21 @@ const hash = await client.sendTransaction({
 })
 ```
 
-## Local Accounts (Private Key, Mnemonic, etc)
+## 本地账户（私钥，助记词等）
 
-A Local Account performs signing of transactions & messages with a private key **before** executing a method over JSON-RPC.
+本地帐户在通过JSON-RPC执行方法`之前`使用私钥执行事务和消息的签名。
 
-There are three types of Local Accounts in viem:
+在viem中使用本地账户有下面三种方法：
 
-- [Private Key Account](/docs/accounts/privateKey)
-- [Mnemonic Account](/docs/accounts/mnemonic)
-- [Hierarchical Deterministic (HD) Account](/docs/accounts/hd)
+- [私钥账户](/docs/accounts/privateKey)
+- [助记词账户](/docs/accounts/mnemonic)
+- [分层确定性(HD)账户](/docs/accounts/hd)
 
-Below are the steps to integrate a **Private Key Account**, but the same steps can be applied to **Mnemonic & HD Accounts**.
+下面是集成**私钥账户**的步骤，分层确定性(HD)账户的设置方法也是一样的
 
-#### 1: Initialize a Wallet Client
+#### 1: 初始化钱包客户端
 
-Before we set up our Account and start consuming Wallet Actions, we will need to set up our Wallet Client with the [`http` Transport](/docs/clients/transports/http):
+在设置账户和开始使用钱包操作之前，需要[`http` Transport](/docs/clients/transports/http)来设置钱包客户端：
 
 ```ts
 import { createWalletClient, http } from 'viem'
@@ -139,9 +141,9 @@ const client = createWalletClient({
 })
 ```
 
-#### 2: Set up your Local Account
+#### 2: 设置本地账户
 
-Next, we will instantiate a Private Key Account using `privateKeyToAccount`:
+下面使用`privateKeyToAccount`来实例化一个私钥帐户：
 
 ```ts
 import { createWalletClient, http } from 'viem'
@@ -156,9 +158,9 @@ const client = createWalletClient({
 const account = privateKeyToAccount('0x...') // [!code focus:1]
 ```
 
-#### 3: Consume [Wallet Actions](/docs/actions/wallet/introduction)
+#### 3: 使用 [钱包操作](/docs/actions/wallet/introduction)
 
-Now you can use that Account within Wallet Actions that need a signature from the user:
+现在可以在需要用户签名的钱包操作中使用设好的帐户：
 
 ```ts
 import { createWalletClient, http } from 'viem'
@@ -179,9 +181,9 @@ const hash = await client.sendTransaction({ // [!code focus:5]
 })
 ```
 
-#### Optional: Hoist the Account
+#### 可选项：提升帐户
 
-If you do not wish to pass an account around to every Action that requires an `account`, you can also hoist the account into the Wallet Client.
+如果你不希望在每次请求`account`操作的时候都传入账户，你可以提升账户到钱包客户端
 
 ```ts
 import { createWalletClient, http } from 'viem'
@@ -203,11 +205,11 @@ const hash = await client.sendTransaction({
 })
 ```
 
-#### Optional: Extend with Public Actions
+#### 可选的：通过公共操作进行扩展
 
-When using a Local Account, you may be finding yourself using a [Public Client](/docs/clients/public) instantiated with the same parameters (`transport`, `chain`, etc) as your Wallet Client.
+在使用本地帐户时，可能需要使用与钱包客户端相同的参数（`transport`、`chain`等）实例化的[公共客户端](/docs/clients/public)。
 
-In this case, you can extend your Wallet Client with [Public Actions](/docs/actions/public/introduction) to avoid having to handle multiple Clients.
+在这种情况下，可以使用[公共操作](/docs/actions/public/introduction)来扩展钱包客户端，这样可以避免处理多个客户端。
 
 ```ts {12}
 import { createWalletClient, http, publicActions } from 'viem'
@@ -225,15 +227,15 @@ const { request } = await client.simulateContract({ ... }) // Public Action
 const hash = await client.writeContract(request) // Wallet Action
 ```
 
-## Parameters
+## 参数
 
-### account (optional)
+### account（可选的）
 
 - **Type:** `Account | Address`
 
-The Account to use for the Wallet Client. This will be used for Actions that require an `account` as an argument.
+用于钱包客户端的账户。这将用于需要`account`作为参数的操作。
 
-Accepts a [JSON-RPC Account](#json-rpc-accounts) or [Local Account (Private Key, etc)](#local-accounts-private-key-mnemonic-etc).
+接受[JSON-RPC账户](#json-rpc-accounts) 或者 [本地账户(私钥等)](#local-accounts-private-key-mnemonic-etc)。
 
 ```ts
 import { createWalletClient, custom } from 'viem'
@@ -251,13 +253,13 @@ const hash = await client.sendTransaction({
 })
 ```
 
-### chain (optional)
+### chain（可选的）
 
 - **Type:** [Chain](/docs/glossary/types#chain)
 
-The [Chain](/docs/clients/chains) of the Wallet Client.
+钱包客户端中的[Chain](/docs/clients/chains)。
 
-Used in the [`sendTransaction`](/docs/actions/wallet/sendTransaction) & [`writeContract`](/docs/contract/writeContract) Actions to assert that the chain matches the wallet's active chain.
+用[`sendTransaction`](/docs/actions/wallet/sendTransaction) 和 [`writeContract`](/docs/contract/writeContract) 来断言该链与钱包的活动链相匹配的操作。
 
 ```ts
 const client = createWalletClient({
@@ -266,12 +268,12 @@ const client = createWalletClient({
 })
 ```
 
-### cacheTime (optional)
+### cacheTime（可选的）
 
 - **Type:** `number`
 - **Default:** `client.pollingInterval`
 
-Time (in ms) that cached data will remain in memory.
+缓存数据在内存中保留的时间（以毫秒为单位）。
 
 ```ts
 const client = createWalletClient({
@@ -281,12 +283,12 @@ const client = createWalletClient({
 })
 ```
 
-### key (optional)
+### key（可选的）
 
 - **Type:** `string`
 - **Default:** `"wallet"`
 
-A key for the Client.
+客户端中的key
 
 ```ts
 import { createWalletClient, custom } from 'viem'
@@ -297,12 +299,12 @@ const client = createWalletClient({
 })
 ```
 
-### name (optional)
+### name（可选的）
 
 - **Type:** `string`
 - **Default:** `"Wallet Client"`
 
-A name for the Client.
+客户端中的name
 
 ```ts
 import { createWalletClient, custom } from 'viem'
@@ -313,12 +315,12 @@ const client = createWalletClient({
 })
 ```
 
-### pollingInterval (optional)
+### pollingInterval（可选的）
 
 - **Type:** `number`
 - **Default:** `4_000`
 
-Frequency (in ms) for polling enabled Actions.
+轮询启用的操作的间隔时间（毫秒）
 
 ```ts
 import { createWalletClient, custom } from 'viem'
