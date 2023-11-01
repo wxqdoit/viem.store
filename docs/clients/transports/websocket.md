@@ -2,27 +2,26 @@
 head:
   - - meta
     - property: og:title
-      content: WebSocket Transport
+      content: WebSocket传输方式
   - - meta
     - name: description
-      content: A function to create a WebSocket Transport for a Client.
+      content: 为客户端创建WebSocket传输方式的方法。
   - - meta
     - property: og:description
-      content: A function to create a WebSocket Transport for a Client.
+      content: 为客户端创建WebSocket传输方式的方法。
 
 ---
 
-# WebSocket Transport
+# WebSocket 传输方式
+`webSocket`传输方式，通过WebSocket连接到JSON-RPC API。
 
-The `webSocket` Transport connects to a JSON-RPC API via a WebSocket.
-
-## Import
+## 导入
 
 ```ts
 import { webSocket } from 'viem'
 ```
 
-## Usage
+## 用例
 
 ```ts {4}
 import { createPublicClient, webSocket } from 'viem'
@@ -37,27 +36,27 @@ const client = createPublicClient({
 ```
 
 ::: warning
-If no `url` is provided, then the transport will fall back to a public RPC URL on the chain. It is highly recommended to provide an authenticated RPC URL to prevent rate-limiting.
+如果提供了`url`，那么传输将回退到链上的公共RPC URL。 强烈建议提供经过身份验证的RPC URL以防止速率限制。
 :::
 
-## Parameters
+## 参数
 
 ### url
 
 - **Type:** `string`
 
-URL of the JSON-RPC API.
+JSON-RPC API 的 url.
 
 ```ts
 const transport = webSocket('wss://eth-mainnet.g.alchemy.com/v2/...')
 ```
 
-### key (optional)
+### key（可选的）
 
 - **Type:** `string`
 - **Default:** `"webSocket"`
 
-A key for the Transport.
+传输方式的key。
 
 ```ts
 const transport = webSocket('wss://eth-mainnet.g.alchemy.com/v2/...', { 
@@ -65,12 +64,12 @@ const transport = webSocket('wss://eth-mainnet.g.alchemy.com/v2/...', {
 })
 ```
 
-### name (optional)
+### name（可选的）
 
 - **Type:** `string`
 - **Default:** `"WebSocket JSON-RPC"`
 
-A name for the Transport
+传输方式的名称。
 
 ```ts
 const transport = webSocket('wss://eth-mainnet.g.alchemy.com/v2/...', { 
@@ -78,12 +77,12 @@ const transport = webSocket('wss://eth-mainnet.g.alchemy.com/v2/...', {
 })
 ```
 
-### retryCount (optional)
+### retryCount（可选的）
 
 - **Type:** `number`
 - **Default:** `3`
 
-The max number of times to retry when a request fails.
+请求失败时重试的最大次数。
 
 ```ts
 const transport = webSocket('wss://eth-mainnet.g.alchemy.com/v2/...', {
@@ -91,12 +90,12 @@ const transport = webSocket('wss://eth-mainnet.g.alchemy.com/v2/...', {
 })
 ```
 
-### retryDelay (optional)
+### retryDelay（可选的）
 
 - **Type:** `number`
 - **Default:** `150`
 
-The base delay (in ms) between retries. By default, the Transport will use [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff) (`~~(1 << count) * retryDelay`), which means the time between retries is not constant.
+每次重试之间的基本延迟（以毫秒为单位）。 默认情况下，Transport将使用[指数退避](https://en.wikipedia.org/wiki/Exponential_backoff) (`~~(1 << count) * retryDelay`)，这意味着重试之间的时间不是恒定的 。
 
 ```ts
 const transport = webSocket('wss://eth-mainnet.g.alchemy.com/v2/...', {
@@ -104,12 +103,12 @@ const transport = webSocket('wss://eth-mainnet.g.alchemy.com/v2/...', {
 })
 ```
 
-### timeout (optional)
+### timeout（可选的）
 
 - **Type:** `number`
 - **Default:** `10_000`
 
-The timeout for async WebSocket requests.
+请求超时时间。
 
 ```ts
 const transport = webSocket('wss://eth-mainnet.g.alchemy.com/v2/...', {

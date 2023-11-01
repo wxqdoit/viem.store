@@ -2,13 +2,13 @@
 head:
   - - meta
     - property: og:title
-      content: Chains
+      content: 链
   - - meta
     - name: description
-      content: A list of chains to use with viem.
+      content: 与viem一起使用的链的列表。
   - - meta
     - property: og:description
-      content: A list of chains to use with viem.
+      content: 与viem一起使用的链的列表。
 
 ---
 

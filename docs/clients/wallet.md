@@ -38,7 +38,7 @@ import { createWalletClient } from 'viem'
 
 #### 1：初始化一个钱包客户端
 
-在我们设置账户和开始使用钱包操作之前，我们需要用[`custom` Transport](/docs/clients/transports/custom)来设置好钱包客户端，并在里面传入`window.ethereum` Provider：
+在我们设置账户和开始使用钱包操作之前，我们需要用[`custom` Transport](/docs/clients/transports/custom)来设置好钱包客户端，并在里面传入`window.ethereum`Provider：
 
 ```ts
 import { createWalletClient, custom } from 'viem'
@@ -94,7 +94,7 @@ const hash = await client.sendTransaction({ // [!code focus:10]
 
 #### 可选项：提升帐户
 
-如果你不希望在每次请求`account`操作的时候都传入账户，你可以提升账户到钱包客户端
+如果你不希望在每次请求`account`操作的时候都传入账户，你可以提升账户到钱包客户端。
 
 ```ts
 import { createWalletClient, http } from 'viem'
@@ -125,7 +125,7 @@ const hash = await client.sendTransaction({
 - [助记词账户](/docs/accounts/mnemonic)
 - [分层确定性(HD)账户](/docs/accounts/hd)
 
-下面是集成**私钥账户**的步骤，分层确定性(HD)账户的设置方法也是一样的
+下面是集成**私钥账户**的步骤，分层确定性(HD)账户的设置方法也是一样的。
 
 #### 1: 初始化钱包客户端
 

@@ -2,27 +2,27 @@
 head:
   - - meta
     - property: og:title
-      content: HTTP Transport
+      content: HTTP 传输方式
   - - meta
     - name: description
-      content: A function to create a HTTP Transport for a Client.
+      content: 为客户端创建HTTP传输的函数。
   - - meta
     - property: og:description
-      content: A function to create a HTTP Transport for a Client.
+      content: 为客户端创建HTTP传输的函数。
 
 ---
 
-# HTTP Transport
+# HTTP 传输方式
 
-The `http` Transport connects to a JSON-RPC API via HTTP.
+`http` 传输方式，通过HTTP连接到JSON-RPC API。
 
-## Import
+## 导入
 
 ```ts
 import { http } from 'viem'
 ```
 
-## Usage
+## 用例
 
 ```ts {4}
 import { createPublicClient, http } from 'viem'
@@ -37,27 +37,26 @@ const client = createPublicClient({
 ```
 
 ::: warning
-If no `url` is provided, then the transport will fall back to a public RPC URL on the chain. It is highly recommended to provide an authenticated RPC URL to prevent rate-limiting.
+如果没有提供`url`，那么传输将回退到链上的公共RPC URL。 强烈建议提供经过身份验证的RPC URL以防止速率限制。
 :::
 
-### Batch JSON-RPC
+### 批量 JSON-RPC
 
-The `http` Transport supports Batch JSON-RPC. This means that multiple JSON-RPC requests can be sent in a single HTTP request.
+`http`传输支持批量JSON-RPC。所以可以在单个HTTP请求中发送多个JSON-RPC请求。
 
-The Transport will batch up Actions over a given period and execute them in a single Batch JSON-RPC HTTP request. By default, this period is a [zero delay](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop#zero_delays) meaning that the batch request will be executed at the end of the current [JavaScript message queue](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop#queue). Consumers can specify a custom time period `wait` (in ms).
+Transport将在给定时间段内批量处理Action，并在单个批处理JSON-RPC HTTP请求中执行它们。 默认情况下，该时间段是[零延迟](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop#zero_delays)，这意味着批量请求将在当前时间结束时执行 [JavaScript 消息队列](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop#queue)。 也可以指定自定义时间段`wait`（以毫秒为单位）。
 
-You can enable Batch JSON-RPC by setting the `batch` flag to `true`:
+您可以通过将`batch`标志设置为`true`来启用批处理 JSON-RPC：
 
 ```ts 
 const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
   batch: true // [!code focus]
 })
 ```
-
-Now when you invoke Actions, the `http` Transport will batch and send over those requests at the end of the message queue (or custom time period) in a single Batch JSON-RPC HTTP request:
+现在，当在调用操作的时候，HTTP传输将会在消息队列的末尾（或自定义时间段）进行批处理并发送这些请求，以单个批量的JSON-RPC HTTP请求形式发送：
 
 ```ts
-// The below will send a single Batch JSON-RPC HTTP request to the RPC Provider.
+// 下面将会以单个批处理的形式发送JSON-RPC HTTP请求到RPC Provider.
 const [blockNumber, balance, ensName] = await Promise.all([
   client.getBlockNumber(),
   client.getBalance({ address: '0xd2135CfB216b74109775236E36d4b433F1DF507B' }),
@@ -65,25 +64,25 @@ const [blockNumber, balance, ensName] = await Promise.all([
 ])
 ```
 
-## Parameters
+## 参数
 
-### url (optional)
+### url（可选的）
 
 - **Type:** `string`
 - **Default:** `chain.rpcUrls.default.http[0]`
 
-URL of the JSON-RPC API.
+JSON-RPC API的Url。
 
 ```ts
 const transport = http('https://eth-mainnet.g.alchemy.com/v2/...')
 ```
 
-### batch (optional)
+### batch（可选的）
 
 - **Type:** `boolean | BatchOptions`
 - **Default:** `false`
 
-Toggle to enable Batch JSON-RPC
+切换以启用批处理JSON-RPC
 
 ```ts 
 const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
@@ -91,12 +90,12 @@ const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
 })
 ```
 
-### batch.batchSize (optional)
+### batch.batchSize（可选的）
 
 - **Type:** `number`
 - **Default:** `1_000`
 
-The maximum number of JSON-RPC requests to send in a batch.
+批量发送的 JSON-RPC 请求的最大数量。
 
 ```ts 
 const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
@@ -106,12 +105,12 @@ const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
 })
 ```
 
-### batch.wait (optional)
+### batch.wait（可选的）
 
 - **Type:** `number`
 - **Default:** `0` ([zero delay](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop#zero_delays))
 
-The maximum number of milliseconds to wait before sending a batch.
+发送批处理请求之前等待的最大毫秒数。
 
 ```ts 
 const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
@@ -121,11 +120,11 @@ const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
 })
 ```
 
-### fetchOptions (optional)
+### fetchOptions（可选的）
 
 - **Type:** [`RequestInit`](https://developer.mozilla.org/en-US/docs/Web/API/fetch)
 
-[Fetch options](https://developer.mozilla.org/en-US/docs/Web/API/fetch) to pass to the internal `fetch` function. Useful for passing auth headers or cache options.
+[Fetch options](https://developer.mozilla.org/en-US/docs/Web/API/fetch)传递给内部`fetch`函数。 对于传递身份验证标头或缓存选项很有用。
 
 ```ts
 const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
@@ -137,12 +136,13 @@ const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
 })
 ```
 
-### key (optional)
+### key（可选的）
 
 - **Type:** `string`
 - **Default:** `"http"`
 
-A key for the Transport.
+传输方式的key。
+
 
 ```ts
 const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
@@ -150,12 +150,13 @@ const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
 })
 ```
 
-### name (optional)
+### name（可选的）
 
 - **Type:** `string`
 - **Default:** `"HTTP JSON-RPC"`
 
-A name for the Transport
+传输方式的名称。
+
 
 ```ts
 const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
@@ -163,12 +164,12 @@ const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
 })
 ```
 
-### retryCount (optional)
+### retryCount（可选的）
 
 - **Type:** `number`
 - **Default:** `3`
 
-The max number of times to retry when a request fails.
+请求失败时重试的最大次数。
 
 ```ts
 const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
@@ -176,12 +177,12 @@ const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
 })
 ```
 
-### retryDelay (optional)
+### retryDelay（可选的）
 
 - **Type:** `number`
 - **Default:** `150`
 
-The base delay (in ms) between retries. By default, the Transport will use [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff) (`~~(1 << count) * retryDelay`), which means the time between retries is not constant.
+每次重试之间的基本延迟（以毫秒为单位）。 默认情况下，Transport将使用[指数退避](https://en.wikipedia.org/wiki/Exponential_backoff) (`~~(1 << count) * retryDelay`)，这意味着重试之间的时间不是恒定的 。
 
 ```ts
 const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
@@ -189,12 +190,12 @@ const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {
 })
 ```
 
-### timeout (optional)
+### timeout（可选的）
 
 - **Type:** `number`
 - **Default:** `10_000`
 
-The timeout for requests.
+请求超时时间。
 
 ```ts
 const transport = http('https://eth-mainnet.g.alchemy.com/v2/...', {

@@ -22,9 +22,9 @@ head:
 
 viem中有三种类型的**客户端**：
 
-- [Public Client](/docs/clients/public) 提供[公共操作](/docs/actions/public/introduction)权限, 例如 `getBlockNumber` 和 `getBalance`. 
-- [Wallet Client](/docs/clients/wallet) 提供[钱包操作](/docs/actions/wallet/introduction)权限, 例如 `sendTransaction` 和 `signMessage`.
-- [Test Client](/docs/clients/test) 提供[测试操作](/docs/actions/test/introduction)权限, 例如 `mine` 和 `impersonate`.
+- [Public Client](/docs/clients/public) 提供[公共操作](/docs/actions/public/introduction)权限, 例如 `getBlockNumber` 和 `getBalance`。
+- [Wallet Client](/docs/clients/wallet) 提供[钱包操作](/docs/actions/wallet/introduction)权限, 例如 `sendTransaction` 和 `signMessage`。
+- [Test Client](/docs/clients/test) 提供[测试操作](/docs/actions/test/introduction)权限, 例如 `mine` 和 `impersonate`。
 
 ## Transport
 

@@ -2,21 +2,21 @@
 head:
   - - meta
     - property: og:title
-      content: Fallback Transport
+      content: 备用传输
   - - meta
     - name: description
-      content: A function to create a Fallback Transport for a Client.
+      content: 为客户端创建备用传输的函数。
   - - meta
     - property: og:description
-      content: A function to create a Fallback Transport for a Client.
+      content: 为客户端创建备用传输的函数。
 
 ---
 
-# Fallback Transport
+# 备用传输
 
-The `fallback` Transport consumes **multiple** Transports. If a Transport request fails, it will fall back to the next one in the list.
+`fallback`传输方式需要**多个**传输节点，如果一个传输请求失败了，它会使用列表中的下一个传输节点。
 
-## Import
+## 导入
 
 ```ts
 import { fallback } from 'viem'
@@ -37,15 +37,15 @@ const client = createPublicClient({
 })
 ```
 
-### Transport Ranking
+### 传输排序
 
-Transport Ranking enables each of the Transports passed to the `fallback` Transport are automatically ranked based on their **latency** & **stability** via a weighted moving score algorithm. 
+传输排序使列表中的`fallback`传输的每个传输都可以通过加权移动评分算法根据其**延迟**和**稳定性**自动排序。
 
-Every 10 seconds (`interval`), the `fallback` Transport will ping each transport in the list. For the past 10 pings (`sampleCount`), they will be ranked based on if they responded (stability) and how fast they responded (latency). The algorithm applies a weight of `0.7` to the stability score, and a weight of `0.3` to the latency score to derive the final score which it is ranked on. 
+每间隔10秒（`interval`），`fallback`传输将对列表中的每个传输执行ping操作。 对于过去10个ping（`sampleCount`），将根据它们是否响应（稳定性）以及响应速度（延迟）进行排名。 该算法对稳定性分数应用权重为`0.7`，对延迟分数应用权重为`0.3`，以得出其排名的最终分数。
 
-The Transport that has the best latency & stability score over the sample period is prioritized first. 
+在采样期内具有最佳延迟和稳定性得分的传输节点将首先被优先考虑。
 
-You can turn on automated ranking with the `rank` option:
+使用 `rank` 选项使用自动排序：
 
 ```ts
 const client = createPublicClient({
@@ -57,7 +57,7 @@ const client = createPublicClient({
 })
 ```
 
-You can also modify the default rank config:
+也可以修改默认排名配置：
 
 ```ts
 const client = createPublicClient({
@@ -79,14 +79,14 @@ const client = createPublicClient({
 })
 ```
 
-## Parameters
+## 参数
 
-### rank (optional)
+### rank（可选的）
 
 - **Type:** `boolean | RankOptions`
 - **Default:** `false`
 
-Whether or not to automatically rank the Transports based on their latency & stability. Set to `false` to disable automatic ranking.
+是否根据传输的延迟和稳定性自动对其进行排名， 设置为`false`来禁用自动排序。
 
 ```ts
 const transport = fallback([alchemy, infura], {
@@ -94,12 +94,12 @@ const transport = fallback([alchemy, infura], {
 })
 ```
 
-### rank.interval (optional)
+### rank.interval（可选的）
 
 - **Type:** `number`
 - **Default:** `client.pollingInterval`
 
-The polling interval (in ms) at which the ranker should ping the RPC URL.
+排序器应当ping RPC URL 的轮询间隔（以毫秒为单位）。
 
 ```ts
 const transport = fallback([alchemy, infura], {
@@ -109,12 +109,12 @@ const transport = fallback([alchemy, infura], {
 })
 ```
 
-### rank.sampleCount (optional)
+### rank.sampleCount（可选的）
 
 - **Type:** `number`
 - **Default:** `10`
 
-The number of previous samples to perform ranking on.
+要执行排序的先前样本的数量（默认是10个）。
 
 ```ts
 const transport = fallback([alchemy, infura], {
@@ -124,12 +124,12 @@ const transport = fallback([alchemy, infura], {
 })
 ```
 
-### rank.timeout (optional)
+### rank.timeout（可选的）
 
 - **Type:** `number`
 - **Default:** `1_000`
 
-Timeout when sampling transports.
+采样传输超时时间。
 
 ```ts
 const transport = fallback([alchemy, infura], {
@@ -139,12 +139,12 @@ const transport = fallback([alchemy, infura], {
 })
 ```
 
-### rank.weights.latency (optional)
+### rank.weights.latency（可选的）
 
 - **Type:** `number`
 - **Default:** `0.3`
 
-The weight to apply to the latency score. The weight is proportional to the other values in the `weights` object.
+延迟分数的权重。 权重与`weights`对象中的其他值成比例。
 
 ```ts
 const transport = fallback([alchemy, infura], {
@@ -157,12 +157,12 @@ const transport = fallback([alchemy, infura], {
 })
 ```
 
-### rank.weights.stability (optional)
+### rank.weights.stability（可选的）
 
 - **Type:** `number`
 - **Default:** `0.7`
 
-The weight to apply to the stability score. The weight is proportional to the other values in the `weights` object.
+稳定性得分的权重。 权重与`weights`对象中的其他值成比例。
 
 ```ts
 const transport = fallback([alchemy, infura], {
@@ -175,14 +175,14 @@ const transport = fallback([alchemy, infura], {
 })
 ```
 
-### retryCount (optional)
+### retryCount（可选的）
 
 - **Type:** `number`
 - **Default:** `3`
 
-The max number of times to retry when a request fails. 
+请求失败时重试的最大次数。
 
-> Note: The fallback will first try all the Transports before retrying.
+> 注意：在重试之前回滚将会尝试所有的传输。
 
 ```ts
 const transport = fallback([alchemy, infura], {
@@ -190,12 +190,12 @@ const transport = fallback([alchemy, infura], {
 })
 ```
 
-### retryDelay (optional)
+### retryDelay（可选的）
 
 - **Type:** `number`
 - **Default:** `150`
 
-The base delay (in ms) between retries. By default, the Transport will use [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff) (`~~(1 << count) * retryDelay`), which means the time between retries is not constant.
+每次重试之间的基本延迟（以毫秒为单位）。 默认情况下，Transport将使用[指数退避](https://en.wikipedia.org/wiki/Exponential_backoff) (`~~(1 << count) * retryDelay`)，这意味着重试之间的时间不是恒定的 。
 
 ```ts
 const transport = fallback([alchemy, infura], {
@@ -203,3 +203,4 @@ const transport = fallback([alchemy, infura], {
 })
 ```
 
+ 

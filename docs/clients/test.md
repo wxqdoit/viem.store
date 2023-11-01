@@ -66,7 +66,7 @@ const hash = await client.sendTransaction({ ... }) // Wallet Action
 const mine = await client.mine({ blocks: 1 }) // Test Action
 ```
 
-## Parameters
+## 参数
 
 ### mode
 

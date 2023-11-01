@@ -93,7 +93,7 @@ const [name, totalSupply, symbol, tokenUri, balance] = await Promise.all([
 
 - **Type:** [Transport](/docs/glossary/types#transport)
 
-公共客户端的中的[Transport](/docs/clients/intro)。
+公共客户端中的[Transport](/docs/clients/intro)。
 
 ```ts
 const client = createPublicClient({
@@ -106,7 +106,7 @@ const client = createPublicClient({
 
 - **Type:** [Chain](/docs/glossary/types#chain)
 - 
-公共客户端的中的[Chain](/docs/clients/chains)。
+公共客户端中的[Chain](/docs/clients/chains)。
 
 
 ```ts
